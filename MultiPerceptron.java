@@ -1,13 +1,15 @@
-public class MultiPerceptron {
-
-    private final int m;
-    private final int n;
-    private final double[][] weights;
+class MultiPerceptron {
+    private int m;
+    private int n;
+    private Perceptron[] perceptrons;
 
     public MultiPerceptron(int m, int n) {
         this.m = m;
         this.n = n;
-        this.weights = new double[m][n];
+        this.perceptrons = new Perceptron[m];
+        for (int i = 0; i < m; i++) {
+            perceptrons[i] = new Perceptron(n);
+        }
     }
 
     public int numberOfClasses() {
@@ -19,45 +21,55 @@ public class MultiPerceptron {
     }
 
     public int predictMulti(double[] x) {
-        if (x.length != n) {
-            throw new IllegalArgumentException(
-                    "Feature vector size does not match the expected size: " + n);
-        }
-
-        double maxScore = Double.NEGATIVE_INFINITY;
+        double maxSum = Double.NEGATIVE_INFINITY;
         int bestClass = -1;
-
         for (int i = 0; i < m; i++) {
-            double score = 0.0;
-            for (int j = 0; j < n; j++) {
-                score += weights[i][j] * x[j];
-            }
-
-            if (score > maxScore) {
-                maxScore = score;
+            double sum = perceptrons[i].weightedSum(x);
+            if (sum > maxSum) {
+                maxSum = sum;
                 bestClass = i;
             }
         }
-
         return bestClass;
     }
 
     public void trainMulti(double[] x, int label) {
-        if (x.length != n) {
-            throw new IllegalArgumentException(
-                    "Feature vector size does not match the expected size: " + n);
-        }
-
-        int predictedLabel = predictMulti(x);
-
-        if (predictedLabel != label) {
-            for (int j = 0; j < n; j++) {
-                weights[label][j] += x[j];
+        for (int i = 0; i < m; i++) {
+            if (i == label) {
+                perceptrons[i].train(x, 1);
             }
-
-            for (int j = 0; j < n; j++) {
-                weights[predictedLabel][j] -= x[j];
+            else {
+                perceptrons[i].train(x, -1);
             }
         }
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder("(");
+        for (int i = 0; i < m; i++) {
+            sb.append(perceptrons[i].toString());
+            if (i < m - 1) sb.append(", ");
+        }
+        sb.append(")");
+        return sb.toString();
+    }
+
+    public static void main(String[] args) {
+        MultiPerceptron multiPerceptron = new MultiPerceptron(2, 3);
+        System.out.println(multiPerceptron);
+
+        double[] training1 = { 5.0, -4.0, 3.0 };
+        double[] training2 = { 2.0, 3.0, -2.0 };
+        double[] training3 = { 4.0, 3.0, 2.0 };
+        double[] training4 = { -6.0, -5.0, 7.0 };
+
+        multiPerceptron.trainMulti(training1, 1);
+        System.out.println(multiPerceptron);
+        multiPerceptron.trainMulti(training2, 0);
+        System.out.println(multiPerceptron);
+        multiPerceptron.trainMulti(training3, 1);
+        System.out.println(multiPerceptron);
+        multiPerceptron.trainMulti(training4, 0);
+        System.out.println(multiPerceptron);
     }
 }
