@@ -80,7 +80,11 @@ This project is inspired by real-world combinatorial optimization problems and d
 
 # Drawing-SierpinskiTriangle-Transform-using-Recursive 
 
-Art.java Sierpinski.java Transform2D.java
+Art.java 
+
+Sierpinski.java 
+
+Transform2D.java
 
 Overview:
 
