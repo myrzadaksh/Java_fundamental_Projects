@@ -1,6 +1,8 @@
 # Java_fundamental_Projects
 
-# Traveling Salesperson Problem (TSP) Tour.java
+# Traveling Salesperson Problem (TSP) 
+
+Tour.java
 
 ## Overview
 
@@ -76,7 +78,9 @@ The program outputs:
 
 This project is inspired by real-world combinatorial optimization problems and demonstrates heuristic approaches to solve complex problems efficiently.
 
-# Drawing-SierpinskiTriangle-Transform-using-Recursive Art.java Sierpinski.java Transform2D.java
+# Drawing-SierpinskiTriangle-Transform-using-Recursive 
+
+Art.java Sierpinski.java Transform2D.java
 
 Overview:
 
